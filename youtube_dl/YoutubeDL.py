@@ -195,6 +195,7 @@ class YoutubeDL(object):
     cachedir:          Location of the cache files in the filesystem.
                        False to disable filesystem cache.
     noplaylist:        Download single video instead of a playlist if in doubt.
+    organize_output:   Organize a playlist into directories if "artist", "track", and "album" are found.
     age_limit:         An integer representing the user's age in years.
                        Unsuitable videos for the given age are skipped.
     min_views:         An integer representing the minimum view count the video
@@ -636,6 +637,12 @@ class YoutubeDL(object):
 
     def prepare_filename(self, info_dict):
         """Generate the output filename."""
+        organize = self.params.get('organize_output')
+        if organize:
+            artist = info_dict.get('artist')
+            track = info_dict.get('track')
+            album = info_dict.get('album')
+
         try:
             template_dict = dict(info_dict)
 
@@ -699,6 +706,28 @@ class YoutubeDL(object):
                     outtmpl = re.sub(
                         FORMAT_RE.format(numeric_field),
                         r'%({0})s'.format(numeric_field), outtmpl)
+                    if artist and track and album:
+                        outtmpl = outtmpl.replace('-%(id)s', '')
+                        current_path = organize or os.getcwd()
+                        artist_directory = os.path.join(current_path, artist) if artist.lower() not in current_path.lower() else current_path[:current_path.lower().index(artist.lower()) + len(artist)]
+                        artist_directory_exists = os.path.exists(artist_directory)
+                        album_directory = os.path.join(artist_directory, album)
+                        album_directory_exists = os.path.exists(album_directory)
+
+                        if artist not in current_path \
+                           and not artist_directory_exists:
+                            os.mkdir(artist_directory)
+
+                        if artist_directory_exists:
+                            os.chdir(artist_directory)
+
+                        if album not in current_path \
+                           and not album_directory_exists:
+                            os.chdir(artist_directory)
+                            os.mkdir(album_directory)
+
+                        if album_directory_exists:
+                            os.chdir(album_directory)
 
             # expand_path translates '%%' into '%' and '$$' into '$'
             # correspondingly that is not what we want since we need to keep

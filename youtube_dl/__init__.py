@@ -314,6 +314,11 @@ def _real_main(argv=None):
         None if opts.match_filter is None
         else match_filter_func(opts.match_filter))
 
+    if any('--' + opt == opts.organize_output
+           or '-' + opt == opts.organize_output
+           for opt, value in opts.__dict__.items()):
+        opts.organize_output = '.'
+
     ydl_opts = {
         'usenetrc': opts.usenetrc,
         'username': opts.username,
@@ -363,6 +368,7 @@ def _real_main(argv=None):
         'playlistreverse': opts.playlist_reverse,
         'playlistrandom': opts.playlist_random,
         'noplaylist': opts.noplaylist,
+        'organize_output': opts.organize_output,
         'logtostderr': opts.outtmpl == '-',
         'consoletitle': opts.consoletitle,
         'nopart': opts.nopart,
