@@ -274,7 +274,7 @@ def _real_main(argv=None):
     # extra metadata. By default ffmpeg preserves metadata applicable for both
     # source and target containers. From this point the container won't change,
     # so metadata can be added here.
-    if opts.addmetadata:
+    if opts.addmetadata or opts.organize_output:
         postprocessors.append({'key': 'FFmpegMetadata'})
     if opts.convertsubtitles:
         postprocessors.append({
@@ -314,7 +314,7 @@ def _real_main(argv=None):
         None if opts.match_filter is None
         else match_filter_func(opts.match_filter))
 
-    if not os.path.exists(opts.organize_output):
+    if opts.organize_output and not os.path.exists(opts.organize_output):
         print('Directory doesn\'t exist or none was given. Defaulting to current directory.')
         opts.organize_output = os.getcwd()
 

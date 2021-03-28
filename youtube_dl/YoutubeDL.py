@@ -706,7 +706,8 @@ class YoutubeDL(object):
                     outtmpl = re.sub(
                         FORMAT_RE.format(numeric_field),
                         r'%({0})s'.format(numeric_field), outtmpl)
-                    if artist and track and album:
+
+                    if organize and artist and track and album:
                         outtmpl = outtmpl.replace('-%(id)s', '')
                         current_path = organize or os.getcwd()
                         artist_directory = os.path.join(current_path, artist) \
