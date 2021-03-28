@@ -314,10 +314,9 @@ def _real_main(argv=None):
         None if opts.match_filter is None
         else match_filter_func(opts.match_filter))
 
-    if any('--' + opt == opts.organize_output
-           or '-' + opt == opts.organize_output
-           for opt, value in opts.__dict__.items()):
-        opts.organize_output = '.'
+    if not os.path.exists(opts.organize_output):
+        print('Directory doesn\'t exist or none was given. Defaulting to current directory.')
+        opts.organize_output = os.getcwd()
 
     ydl_opts = {
         'usenetrc': opts.usenetrc,

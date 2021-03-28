@@ -709,7 +709,11 @@ class YoutubeDL(object):
                     if artist and track and album:
                         outtmpl = outtmpl.replace('-%(id)s', '')
                         current_path = organize or os.getcwd()
-                        artist_directory = os.path.join(current_path, artist) if artist.lower() not in current_path.lower() else current_path[:current_path.lower().index(artist.lower()) + len(artist)]
+                        artist_directory = os.path.join(current_path, artist) \
+                            if artist.lower() not in current_path.lower() \
+                            else current_path[:current_path.lower()
+                                              .index(artist.lower())
+                                              + len(artist)]
                         artist_directory_exists = os.path.exists(artist_directory)
                         album_directory = os.path.join(artist_directory, album)
                         album_directory_exists = os.path.exists(album_directory)

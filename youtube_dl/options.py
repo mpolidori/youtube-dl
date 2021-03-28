@@ -338,7 +338,7 @@ def parseOpts(overrideArguments=None):
         help='Download the playlist, if the URL refers to a video and a playlist.')
     selection.add_option(
         '--organize',
-        default='./', dest='organize_output', metavar='FILE', type=str,
+        default='.', dest='organize_output', metavar='FILE', type=str,
         help='Organize a playlist into directories if "artist", "track", and "album" are found.')
     selection.add_option(
         '--age-limit',
